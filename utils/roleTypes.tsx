@@ -2,7 +2,7 @@ export type CompHeaders = {
   jobTitle: string;
   companyType: string;
   companyStage: string;
-  employmentType: string;
+  yearsOfExperience: string;
   annualBase: string;
 };
 

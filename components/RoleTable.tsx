@@ -210,8 +210,8 @@ export const RoleOverview = () => {
       accessor: "companyStage"
     },
     {
-      Header: "Employment Type",
-      accessor: "employmentType"
+      Header: "Years of Experience",
+      accessor: "yearsOfExperience"
     },
     {
       Header: "Annual Base",
