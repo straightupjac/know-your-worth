@@ -1,3 +1,4 @@
+import { Button, Text } from '@chakra-ui/react'
 import { RoleOverview } from '@components/RoleTable'
 import type { NextPage } from 'next'
 import Head from 'next/head'
@@ -15,7 +16,15 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.hero}>
-        <Image alt="know your worth in web3" src="/assets/hero.svg" height={500} width={1000} />
+        <Image alt="know your worth in web3" src="/assets/hero.svg" height={300} width={1000} />
+        <Text fontSize="2rem">
+          By {` `}
+          <a href="https://twitter.com/Blockchaingirls" target="_blank" rel="noreferrer">
+            WiB
+          </a> x <a href="https://twitter.com/ValuesIndex" target="_blank" rel="noreferrer">
+            Values Index
+          </a>
+        </Text>
       </div>
       <main className={styles.main}>
         <h1 className={styles.title}>
@@ -27,7 +36,7 @@ const Home: NextPage = () => {
         </p>
         <RoleOverview />
       </main>
-    </div>
+    </div >
   )
 }
 

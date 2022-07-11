@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className={`${styles.footer}`}>
       <VStack gap={0}>
         <Text>
-          {`Know Your Worth`} &copy; {new Date().getFullYear()}
+          {`Know Your Worth in Web3`} &copy; {new Date().getFullYear()}
         </Text>
         <a href="https://github.com/straightupjac/know-your-worth" rel="noreferrer" target="_blank" >
           <IconButton

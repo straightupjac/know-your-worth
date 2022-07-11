@@ -5,33 +5,17 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import '@fontsource/audiowide';
 import '@fontsource/sanchez';
 import Footer from '@components/core/Footer';
+import { NavBar } from '@components/core/Navbar';
 
 /* Theming */
 const theme = extendTheme({
   components: {
     Button: {
       baseStyle: {
-        fontFamily: "Apple Garamond, serif",
-        fontWeight: 'normal',
-        color: '#7B622B'
       },
       variants: {
         outline: {
           border: "2px solid",
-          borderColor: "#7E521E",
-          color: '#7B622B'
-        },
-        solid: {
-          bg: "#7E521E",
-          color: "#F9E2D1",
-          _hover: {
-            bg: "rgba(126, 82, 30, 0.8)",
-          }
-        },
-        ghost: {
-          _hover: {
-            bg: '#7B622B40'
-          }
         },
       },
     },
@@ -80,6 +64,7 @@ function App({ Component, pageProps }: AppProps) {
     <>
       <Meta />
       <ChakraProvider theme={theme}>
+        <NavBar />
         <Component {...pageProps} />
         <Footer />
       </ChakraProvider>

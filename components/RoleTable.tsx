@@ -11,7 +11,9 @@ import {
   Button,
   Input,
   Select,
-  HStack
+  HStack,
+  Text,
+  VStack
 } from "@chakra-ui/react";
 import {
   TriangleDownIcon,
@@ -200,6 +202,18 @@ export const RoleOverview = () => {
     {
       Header: "Job Title",
       accessor: "jobTitle",
+      Cell: ({ row }: { row: any }) => {
+        return (
+          <VStack textAlign="start" align="start" width="100%">
+            <Text>
+              {row.original.jobTitle}
+            </Text>
+            <Text color="gray" fontStyle="italic">
+              {row.original.location}
+            </Text>
+          </VStack>
+        )
+      },
     },
     {
       Header: "Company Type",
