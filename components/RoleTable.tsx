@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Table,
   Thead,
@@ -21,8 +20,11 @@ import {
   TriangleUpIcon
 } from "@chakra-ui/icons";
 import { useTable, useSortBy, Column, usePagination } from "react-table";
-import { CompData, CompHeaders } from "@utils/roleTypes";
+import { CompHeaders } from "@utils/roleTypes";
 import useSWR from 'swr';
+import { useMemo, useState } from "react";
+import Fuse from 'fuse.js';
+
 
 export type DataTableProps<Data extends object> = {
   data: Data[];
@@ -168,33 +170,31 @@ function RoleTable<Data extends object>({
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export const RoleOverview = () => {
-  const { data, error } = useSWR('api/data', fetcher)
-  const compData = data;
-  // const compData: CompData[] = [
-  //   {
-  //     jobTitle: "software engineer",
-  //     companyType: "Other",
-  //     companyStage: "Series A",
-  //     employmentType: "Full-time",
-  //     remoteOrInPerson: "Remote",
-  //     annualBase: "$150",
-  //     additionalComp: "Equity, Bonus",
-  //     equity: "unsure",
-  //     tokenGrant: "none",
-  //     bonus: "around $15k last year ",
-  //     signOnBonus: "none",
-  //     benefits: "health coverage, unlimited PTO, travel budget",
-  //     outputFactor: "2",
-  //     equitableFactor: "2",
-  //     web3yearsOfExperience: "3-5",
-  //     yearsOfExperience: "3-5",
-  //     identity: "Female, LGBTQ+, Underrepresented racial/ethnic minority",
-  //     demographic: "mixed race (British and Chinese)",
-  //     location: "Canada",
-  //     hasKids: false,
-  //     comments: "research and development on many different blockchains/protocols, alternative clients, audits, consulting"
-  //   }
-  // ];
+
+  const { data: airtableData, error } = useSWR('api/data', fetcher)
+  const [search, setSearch] = useState('');
+
+  const options = {
+    includeScore: true,
+    threshold: 0.4,
+    keys: ['remoteOrInPerson', 'jobTitle', 'identity', 'demographic', 'companyType', 'benefits', 'companyStage', 'location']
+  }
+
+  const fuse = useMemo(() => new Fuse(airtableData, options),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [airtableData]);
+
+  const compData = useMemo(() => {
+    if (!airtableData) { return [] };
+    if (!search) { return airtableData.map((dataPoint: any) => { return { item: dataPoint } }) }
+    return fuse.search(search);
+  }, [airtableData, fuse, search]);
+
+
+  const handleSearch = (e: any) => {
+    e.preventDefault();
+    setSearch(e.target.value);
+  };
 
   // see https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react-table
   // to configure react-table typings
@@ -207,10 +207,10 @@ export const RoleOverview = () => {
         return (
           <VStack textAlign="start" align="start" width="100%">
             <Text>
-              {row.original.jobTitle}
+              {row.original.item.jobTitle}
             </Text>
             <Text color="gray" fontStyle="italic">
-              {row.original.location}
+              {row.original.item.location}
             </Text>
           </VStack>
         )
@@ -219,14 +219,35 @@ export const RoleOverview = () => {
     {
       Header: "Company Type",
       accessor: "companyType",
+      Cell: ({ row }: { row: any }) => {
+        return (
+          <Box>
+            {row.original.item.companyType}
+          </Box>
+        )
+      },
     },
     {
       Header: "Company Stage",
-      accessor: "companyStage"
+      accessor: "companyStage",
+      Cell: ({ row }: { row: any }) => {
+        return (
+          <Box>
+            {row.original.item.companyStage}
+          </Box>
+        )
+      },
     },
     {
       Header: "Years of Experience",
-      accessor: "yearsOfExperience"
+      accessor: "yearsOfExperience",
+      Cell: ({ row }: { row: any }) => {
+        return (
+          <Box>
+            {row.original.item.yearsOfExperience}
+          </Box>
+        )
+      },
     },
     {
       Header: "Annual Base (USD)",
@@ -234,7 +255,7 @@ export const RoleOverview = () => {
       Cell: ({ row }: { row: any }) => {
         return (
           <Box>
-            ${row.original.annualBase.toLocaleString()}
+            ${row.original.item.annualBase.toLocaleString()}
           </Box>
         )
       },
@@ -248,11 +269,19 @@ export const RoleOverview = () => {
       </Center>
     </Box>
   )
-  if (!data) return (
+  if (!compData) return (
     <Box>
       <Center>
         loading...
       </Center>
     </Box>)
-  return <RoleTable columns={columns} data={compData} />
+  return (
+    <>
+      <label htmlFor="search">
+        Search by Task:
+        <Input id="search" type="text" onChange={handleSearch} />
+      </label>
+      <RoleTable columns={columns} data={compData} />
+    </>
+  )
 }

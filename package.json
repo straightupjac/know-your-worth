@@ -21,6 +21,7 @@
     "airtable": "^0.11.4",
     "cors": "^2.8.5",
     "framer-motion": "^6",
+    "fuse.js": "^6.6.2",
     "keysho": "^1.3.0",
     "next": "12.2.2",
     "react": "18.2.0",

@@ -64,8 +64,8 @@ const theme = extendTheme({
 function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <Keysho
-        config_uuid='031eeeee-0535-11ed-8593-423a4adfad1d' actionMap={undefined} />
+      {/* <Keysho
+        config_uuid='031eeeee-0535-11ed-8593-423a4adfad1d' actionMap={undefined} /> */}
       <Meta />
       <ChakraProvider theme={theme}>
         <NavBar />
