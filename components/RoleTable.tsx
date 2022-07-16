@@ -13,7 +13,8 @@ import {
   Select,
   HStack,
   Text,
-  VStack
+  VStack,
+  Center
 } from "@chakra-ui/react";
 import {
   TriangleDownIcon,
@@ -228,12 +229,30 @@ export const RoleOverview = () => {
       accessor: "yearsOfExperience"
     },
     {
-      Header: "Annual Base",
-      accessor: "annualBase"
+      Header: "Annual Base (USD)",
+      accessor: "annualBase",
+      Cell: ({ row }: { row: any }) => {
+        return (
+          <Box>
+            ${row.original.annualBase.toLocaleString()}
+          </Box>
+        )
+      },
     },
   ];
 
-  if (error) return <div>failed to load</div>
-  if (!data) return <div>loading...</div>
+  if (error) return (
+    <Box>
+      <Center>
+        Failed to load
+      </Center>
+    </Box>
+  )
+  if (!data) return (
+    <Box>
+      <Center>
+        loading...
+      </Center>
+    </Box>)
   return <RoleTable columns={columns} data={compData} />
 }
