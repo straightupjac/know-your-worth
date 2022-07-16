@@ -15,14 +15,17 @@ import {
   VStack,
   Center,
   InputLeftAddon,
-  InputGroup
+  InputGroup,
+  IconButton
 } from "@chakra-ui/react";
 import {
+  ChevronDownIcon,
+  ChevronRightIcon,
   SearchIcon,
   TriangleDownIcon,
   TriangleUpIcon
 } from "@chakra-ui/icons";
-import { useTable, useSortBy, Column, usePagination } from "react-table";
+import { useTable, useSortBy, Column, usePagination, useExpanded } from "react-table";
 import { CompHeaders } from "@utils/roleTypes";
 import useSWR from 'swr';
 import { useMemo, useState } from "react";
@@ -60,6 +63,7 @@ function RoleTable<Data extends object>({
       initialState: { pageIndex: 0 }, // Pass our hoisted table state
     },
     useSortBy,
+    useExpanded,
     usePagination,
   )
 
@@ -107,19 +111,17 @@ function RoleTable<Data extends object>({
               </Tr>
             )
           })}
-          <Tr>
-            {!data ? (
-              // Use our custom loading state to show a loading indicator
-              <Td colSpan={10000}>Loading...</Td>
-            ) : (
-              <Td colSpan={10000}>
-                Showing {page.length} of ~ {pageCount * pageSize}{' '}results
-              </Td>
-            )}
-          </Tr>
         </Tbody>
       </Table>
+      {/* Pagination */}
       <HStack paddingTop={2}>
+        {!data ? (
+          <Text>Loading...</Text>
+        ) : (
+          <Text> Showing {page.length} of ~ {pageCount * pageSize}{' '}results</Text>
+        )}
+      </HStack>
+      <HStack paddingTop={2} width="100%">
         <Button size="xs" variant='ghost' onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {'<<'}
         </Button>{' '}
@@ -173,7 +175,6 @@ function RoleTable<Data extends object>({
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export const RoleOverview = () => {
-
   const { data: airtableData, error } = useSWR('api/data', fetcher)
   const [search, setSearch] = useState('');
 
@@ -198,9 +199,6 @@ export const RoleOverview = () => {
     e.preventDefault();
     setSearch(e.target.value);
   };
-
-  // see https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react-table
-  // to configure react-table typings
 
   const columns: Column<CompHeaders>[] = [
     {
@@ -256,10 +254,27 @@ export const RoleOverview = () => {
       Header: "Annual Base (USD)",
       accessor: "annualBase",
       Cell: ({ row }: { row: any }) => {
+        const [expanded, setExpanded] = useState(false);
+        const handleExpand = () => {
+          setExpanded((expandedVal) => !expandedVal);
+        };
         return (
-          <Box>
-            ${row.original.item.annualBase.toLocaleString()}
-          </Box>
+          <>
+            <HStack gap={1} justifyContent="space-between">
+              <Text>${row.original.item.annualBase.toLocaleString()}</Text>
+              {expanded ?
+                <IconButton onClick={handleExpand} size="xs" aria-label={"chevron down to expand and see more categories"}>
+                  <ChevronDownIcon />
+                </IconButton> :
+                <IconButton onClick={handleExpand} size="xs" aria-label={"chevron right to expand and see more categories"}>
+                  <ChevronRightIcon />
+                </IconButton>}
+            </HStack>
+            {expanded &&
+              <Box>
+                Expanded
+              </Box>}
+          </>
         )
       },
     },
