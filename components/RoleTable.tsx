@@ -284,7 +284,7 @@ export const RoleOverview = () => {
   const options = {
     includeScore: true,
     threshold: 0.4,
-    keys: ['remoteOrInPerson', 'jobTitle', 'identity', 'demographic', 'companyType', 'benefits', 'companyStage', 'location']
+    keys: ['remoteOrInPerson', 'jobTitle', 'identity', 'race', 'companyType', 'benefits', 'companyStage', 'location']
   }
 
   const fuse = useMemo(() => new Fuse(airtableData, options),
