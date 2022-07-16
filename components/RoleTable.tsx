@@ -278,7 +278,6 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export const RoleOverview = () => {
   const { data: airtableData, error } = useSWR('api/data', fetcher);
-  console.log(airtableData);
   const [search, setSearch] = useState('');
 
   const options = {

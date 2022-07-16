@@ -3,7 +3,6 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import Airtable, { FieldSet, Records } from 'airtable';
 import Cors from 'cors'
 import { minifyItems } from '@utils/airtable';
-import { CompData } from '@utils/roleTypes';
 
 // Initializing the cors middleware
 const cors = Cors({
