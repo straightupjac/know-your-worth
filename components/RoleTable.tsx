@@ -16,7 +16,8 @@ import {
   Center,
   InputLeftAddon,
   InputGroup,
-  IconButton
+  IconButton,
+  SimpleGrid
 } from "@chakra-ui/react";
 import {
   ChevronDownIcon,
@@ -30,12 +31,122 @@ import { CompHeaders } from "@utils/roleTypes";
 import useSWR from 'swr';
 import { useMemo, useState } from "react";
 import Fuse from 'fuse.js';
+import { HasKidsChip, IdentityChip, RaceChip } from "./RoleTableChips";
 
 
 export type DataTableProps<Data extends object> = {
   data: Data[];
   columns: Column<Data>[];
 };
+
+export const TableRow = ({ row, prepareRow }: { row: any, prepareRow: any }) => {
+  const [expanded, setExpanded] = useState(false);
+  const handleExpand = () => {
+    setExpanded((expandedVal) => !expandedVal);
+  };
+  prepareRow(row);
+
+  return (<>
+    <Tr {...row.getRowProps()} verticalAlign="middle">
+      {row.cells.map((cell: any, id: any) => (
+        <Td key={id} {...cell.getCellProps()}>
+          {cell.render('Cell')}
+        </Td>
+      ))}
+      {expanded ?
+        <Td>
+          <IconButton onClick={handleExpand} size="xs" aria-label={"chevron down to expand and see more categories"}>
+            <ChevronDownIcon />
+          </IconButton>
+        </Td> :
+        <Td>
+          <IconButton onClick={handleExpand} size="xs" aria-label={"chevron right to expand and see more categories"}>
+            <ChevronRightIcon />
+          </IconButton>
+        </Td>}
+    </Tr>
+    {expanded &&
+      <Tr>
+        <Td colSpan={1000} background="gray.50" borderRadius='0px 0px 10px 10px'>
+          <SimpleGrid columns={[1, 2, 2]} width="100%">
+            <VStack justifyContent="flex-start" alignItems="start" width="100%" gap={2}>
+              <HStack gap={2}>
+                {row.original.item.identity && row.original.item.identity.map(
+                  (identity: string, idx: string) => <IdentityChip key={idx} label={identity} />
+                )}
+                {row.original.item.hasKids && <HasKidsChip />}
+              </HStack>
+              <HStack gap={2}>
+                {row.original.item.race && row.original.item.race.map(
+                  (race: string, idx: string) => <RaceChip key={idx} label={race} />
+                )}
+              </HStack>
+              {(row.original.item.benefits && row.original.item.benefits.length > 0) &&
+                <Text color="gray.600">
+                  Benefits
+                </Text>}
+              <HStack gap={2}>
+                {row.original.item.benefits && row.original.item.benefits.map(
+                  (benefit: string, idx: string) => <Text key={idx}>{benefit}</Text>
+                )}
+              </HStack>
+            </VStack>
+            <Box justifyContent='end'>
+              <VStack gap={2} width='300px'>
+                {row.original.item.web3yearsOfExperience &&
+                  <HStack width='100%' textAlign="start" justifyContent='space-between'>
+                    <Text color="blackAlpha.700">
+                      Web3 Years of Experience
+                    </Text>
+                    <Text>
+                      {row.original.item.web3yearsOfExperience}
+                    </Text>
+                  </HStack>}
+                {row.original.item.equity &&
+                  <HStack width='100%' textAlign="start" justifyContent='space-between'>
+                    <Text color="blackAlpha.700">
+                      Equity
+                    </Text>
+                    <Text>
+                      {row.original.item.equity}
+                    </Text>
+                  </HStack>}
+                {row.original.item.tokenGrant &&
+                  <HStack width='100%' textAlign="start" justifyContent='space-between'>
+                    <Text color="blackAlpha.700">
+                      Token Grant
+                    </Text>
+                    <Text>
+                      {row.original.item.tokenGrant}
+                    </Text>
+                  </HStack>}
+                {row.original.item.bonus &&
+                  <HStack width='100%' textAlign="start" justifyContent='space-between'>
+                    <Text color="blackAlpha.700">
+                      Annual Bonus
+                    </Text>
+                    <Text>
+                      {row.original.item.bonus}
+                    </Text>
+                  </HStack>}
+                {row.original.item.signOnBonus &&
+                  <HStack width='100%' textAlign="start" justifyContent='space-between'>
+                    <Text color="blackAlpha.700">
+                      Sign On Bonus
+                    </Text>
+                    <Text>
+                      {row.original.item.signOnBonus}
+                    </Text>
+                  </HStack>}
+              </VStack>
+            </Box>
+          </SimpleGrid>
+        </Td>
+      </Tr>
+    }
+  </>
+  )
+}
 
 function RoleTable<Data extends object>({
   data,
@@ -93,24 +204,15 @@ function RoleTable<Data extends object>({
                   </chakra.span>
                 </Th>
               ))}
+              <Th
+              >
+                <chakra.span pl="4" />
+              </Th>
             </Tr>
           ))}
         </Thead>
         <Tbody {...getTableBodyProps()}>
-          {page.map((row, i) => {
-            prepareRow(row)
-            return (
-              // eslint-disable-next-line react/jsx-key
-              <Tr {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                  // eslint-disable-next-line react/jsx-key
-                  <Td {...cell.getCellProps()}>
-                    {cell.render('Cell')}
-                  </Td>
-                ))}
-              </Tr>
-            )
-          })}
+          {page.map((row, i) => <TableRow key={i} row={row} prepareRow={prepareRow} />)}
         </Tbody>
       </Table>
       {/* Pagination */}
@@ -175,7 +277,8 @@ function RoleTable<Data extends object>({
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export const RoleOverview = () => {
-  const { data: airtableData, error } = useSWR('api/data', fetcher)
+  const { data: airtableData, error } = useSWR('api/data', fetcher);
+  console.log(airtableData);
   const [search, setSearch] = useState('');
 
   const options = {
@@ -259,22 +362,7 @@ export const RoleOverview = () => {
           setExpanded((expandedVal) => !expandedVal);
         };
         return (
-          <>
-            <HStack gap={1} justifyContent="space-between">
-              <Text>${row.original.item.annualBase.toLocaleString()}</Text>
-              {expanded ?
-                <IconButton onClick={handleExpand} size="xs" aria-label={"chevron down to expand and see more categories"}>
-                  <ChevronDownIcon />
-                </IconButton> :
-                <IconButton onClick={handleExpand} size="xs" aria-label={"chevron right to expand and see more categories"}>
-                  <ChevronRightIcon />
-                </IconButton>}
-            </HStack>
-            {expanded &&
-              <Box>
-                Expanded
-              </Box>}
-          </>
+          <Text>${row.original.item.annualBase.toLocaleString()}</Text>
         )
       },
     },
