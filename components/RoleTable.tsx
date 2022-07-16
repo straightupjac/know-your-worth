@@ -13,9 +13,12 @@ import {
   HStack,
   Text,
   VStack,
-  Center
+  Center,
+  InputLeftAddon,
+  InputGroup
 } from "@chakra-ui/react";
 import {
+  SearchIcon,
   TriangleDownIcon,
   TriangleUpIcon
 } from "@chakra-ui/icons";
@@ -276,12 +279,14 @@ export const RoleOverview = () => {
       </Center>
     </Box>)
   return (
-    <>
-      <label htmlFor="search">
-        Search by Task:
-        <Input id="search" type="text" onChange={handleSearch} />
-      </label>
+    <VStack gap={2}>
+      <InputGroup>
+        <InputLeftAddon>
+          <SearchIcon />
+        </InputLeftAddon>
+        <Input id="search" type="text" placeholder="Search" onChange={handleSearch} />
+      </InputGroup>
       <RoleTable columns={columns} data={compData} />
-    </>
+    </VStack>
   )
 }
