@@ -17,7 +17,8 @@ import {
   InputLeftAddon,
   InputGroup,
   IconButton,
-  SimpleGrid
+  SimpleGrid,
+  useMediaQuery
 } from "@chakra-ui/react";
 import {
   ChevronDownIcon,
@@ -46,6 +47,8 @@ export const TableRow = ({ row, prepareRow }: { row: any, prepareRow: any }) => 
   };
   prepareRow(row);
 
+  const [isTabletSize, isPhoneSize] = useMediaQuery(['(max-width: 900px)', '(max-width: 600px)'])
+
   return (<>
     <Tr {...row.getRowProps()} verticalAlign="middle">
       {row.cells.map((cell: any, id: any) => (
@@ -68,8 +71,51 @@ export const TableRow = ({ row, prepareRow }: { row: any, prepareRow: any }) => 
     {expanded &&
       <Tr>
         <Td colSpan={1000} background="gray.50" borderRadius='0px 0px 10px 10px'>
-          <SimpleGrid columns={[1, 2, 2]} width="100%">
-            <VStack justifyContent="flex-start" alignItems="start" width="100%" gap={2}>
+          {isPhoneSize &&
+            <VStack justifyContent="flex-start" alignItems="start" width="100%" gap={2} paddingBottom={5}>
+              <HStack width='100%' textAlign="start" justifyContent='space-between'>
+                <Text color="gray.600">
+                  Company Type
+                </Text>
+                <Text>
+                  {row.original.item.companyType}
+                </Text>
+              </HStack>
+            </VStack>
+          }
+          {(isPhoneSize || isTabletSize) &&
+            <VStack justifyContent="flex-start" alignItems="start" width="100%" gap={2} paddingBottom={5}>
+              <HStack width='100%' textAlign="start" justifyContent='space-between'>
+                <Text color="gray.600">
+                  Company Stage
+                </Text>
+                <Text>
+                  {row.original.item.companyStage}
+                </Text>
+              </HStack>
+              <HStack width='100%' textAlign="start" justifyContent='space-between'>
+                <Text color="gray.600">
+                  Years of Experience
+                </Text>
+                <Text>
+                  {row.original.item.yearsOfExperience}
+                </Text>
+              </HStack>
+              <HStack width='100%' textAlign="start" justifyContent='space-between'>
+                <Text color="blackAlpha.700">
+                  Web3 Years of Experience
+                </Text>
+                <Text>
+                  {row.original.item.web3yearsOfExperience}
+                </Text>
+              </HStack>
+            </VStack>
+          }
+          <SimpleGrid columns={[1, 1, 2]} width="100%" gap={1}>
+            <VStack justifyContent="flex-start" alignItems="start" width="100%" gap={2} paddingBottom={2}>
+              <Text color="gray.600">
+                Demographics
+              </Text>
               <HStack gap={2}>
                 {row.original.item.identity && row.original.item.identity.map(
                   (identity: string, idx: string) => <IdentityChip key={idx} label={identity} />
@@ -87,13 +133,13 @@ export const TableRow = ({ row, prepareRow }: { row: any, prepareRow: any }) => 
                 </Text>}
               <HStack gap={2}>
                 {row.original.item.benefits && row.original.item.benefits.map(
-                  (benefit: string, idx: string) => <Text key={idx}>{benefit}</Text>
+                  (benefit: string, idx: string) => <Text key={idx} width="100%">{benefit}</Text>
                 )}
               </HStack>
             </VStack>
-            <Box justifyContent='end'>
-              <VStack gap={2} width='300px'>
-                {row.original.item.web3yearsOfExperience &&
+            <Box justifyContent='end' paddingBottom={2}>
+              <VStack gap={2}>
+                {(row.original.item.web3yearsOfExperience && !isTabletSize && !isPhoneSize) &&
                   <HStack width='100%' textAlign="start" justifyContent='space-between'>
                     <Text color="blackAlpha.700">
                       Web3 Years of Experience
@@ -176,7 +222,9 @@ function RoleTable<Data extends object>({
     useSortBy,
     useExpanded,
     usePagination,
-  )
+  );
+
+  const [isTabletSize, isPhoneSize] = useMediaQuery(['(max-width: 900px)', '(max-width: 600px)'])
 
   return (
     <Box p={4} width='100%'>
@@ -216,33 +264,34 @@ function RoleTable<Data extends object>({
         </Tbody>
       </Table>
       {/* Pagination */}
-      <HStack paddingTop={2}>
-        {!data ? (
-          <Text>Loading...</Text>
-        ) : (
-          <Text> Showing {page.length} of ~ {pageCount * pageSize}{' '}results</Text>
-        )}
-      </HStack>
+      {!isPhoneSize &&
+        <HStack paddingTop={2}>
+          {!data ? (
+            <Text>Loading...</Text>
+          ) : (
+            <Text> Showing {page.length} of ~ {pageCount * pageSize}{' '}results</Text>
+          )}
+        </HStack>}
       <HStack paddingTop={2} width="100%">
-        <Button size="xs" variant='ghost' onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+        {!isPhoneSize && <Button size="xs" variant='ghost' onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {'<<'}
-        </Button>{' '}
+        </Button>}{' '}
         <Button size="xs" variant='ghost' onClick={() => previousPage()} disabled={!canPreviousPage}>
           {'<'}
         </Button>{' '}
         <Button size="xs" variant='ghost' onClick={() => nextPage()} disabled={!canNextPage}>
           {'>'}
         </Button>{' '}
-        <Button size="xs" variant='ghost' onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+        {!isPhoneSize && <Button size="xs" variant='ghost' onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
           {'>>'}
-        </Button>{' '}
+        </Button>}{' '}
         <span>
           Page{' '}
           <strong>
             {pageIndex + 1} of {pageOptions.length}
           </strong>{' '}
         </span>
-        <span>
+        {!isPhoneSize && <span>
           | Go to page:{' '}
           <Input
             type="number"
@@ -252,10 +301,10 @@ function RoleTable<Data extends object>({
               const page = e.target.value ? Number(e.target.value) - 1 : 0
               gotoPage(page)
             }}
-            style={{ width: '100px' }}
+            style={{ minWidth: '30px', maxWidth: '50px' }}
           />
-        </span>{' '}
-        <Select
+        </span>}
+        {!isPhoneSize && <Select
           value={pageSize}
           maxWidth='300px'
           onChange={e => {
@@ -268,8 +317,41 @@ function RoleTable<Data extends object>({
               Show {pageSize}
             </option>
           ))}
-        </Select>
+        </Select>}
       </HStack>
+      {isPhoneSize &&
+        <HStack alignItems='start' paddingTop={2}>
+          <HStack>
+            <Text>Go to:</Text>
+            <Input
+              type="number"
+              size="xs"
+              defaultValue={pageIndex + 1}
+              onChange={e => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0
+                gotoPage(page)
+              }}
+              style={{ width: '50px' }}
+            />
+          </HStack>
+          <HStack>
+            <Select
+              value={pageSize}
+              maxWidth='200px'
+              minWidth="50px"
+              onChange={e => {
+                setPageSize(Number(e.target.value))
+              }}
+              size="xs"
+            >
+              {[10, 20, 30, 40, 50].map(pageSize => (
+                <option key={pageSize} value={pageSize}>
+                  Show {pageSize}
+                </option>
+              ))}
+            </Select>
+          </HStack>
+        </HStack>}
     </Box >
   );
 }
@@ -279,7 +361,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 export const RoleOverview = () => {
   const { data: airtableData, error } = useSWR('api/data', fetcher);
   const [search, setSearch] = useState('');
-
+  // options for fuzzy search
   const options = {
     includeScore: true,
     threshold: 0.4,
@@ -302,7 +384,9 @@ export const RoleOverview = () => {
     setSearch(e.target.value);
   };
 
-  const columns: Column<CompHeaders>[] = [
+  const [isTabletSize, isPhoneSize] = useMediaQuery(['(max-width: 900px)', '(max-width: 600px)'])
+
+  const columnsFullSize: Column<CompHeaders>[] = [
     {
       Header: "Job Title",
       accessor: "jobTitle",
@@ -380,6 +464,28 @@ export const RoleOverview = () => {
         loading...
       </Center>
     </Box>)
+  if (isPhoneSize) return (
+    <VStack gap={2}>
+      <InputGroup>
+        <InputLeftAddon>
+          <SearchIcon />
+        </InputLeftAddon>
+        <Input id="search" type="text" placeholder="Search" onChange={handleSearch} />
+      </InputGroup>
+      <RoleTable columns={[columnsFullSize[0], columnsFullSize[4]]} data={compData} />
+    </VStack>
+  )
+  if (isTabletSize) return (
+    <VStack gap={2}>
+      <InputGroup>
+        <InputLeftAddon>
+          <SearchIcon />
+        </InputLeftAddon>
+        <Input id="search" type="text" placeholder="Search" onChange={handleSearch} />
+      </InputGroup>
+      <RoleTable columns={[...columnsFullSize.slice(0, 2), columnsFullSize[4]]} data={compData} />
+    </VStack>
+  )
   return (
     <VStack gap={2}>
       <InputGroup>
@@ -388,7 +494,7 @@ export const RoleOverview = () => {
         </InputLeftAddon>
         <Input id="search" type="text" placeholder="Search" onChange={handleSearch} />
       </InputGroup>
-      <RoleTable columns={columns} data={compData} />
+      <RoleTable columns={columnsFullSize} data={compData} />
     </VStack>
   )
 }
