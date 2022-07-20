@@ -16,7 +16,7 @@ const Home: NextPage = () => {
       <div className={styles.hero}>
         <Image alt="know your worth in web3" src="/assets/hero.svg" height={300} width={1000} />
         <Text fontSize="2rem">
-          By {` `}
+          In collaboration with {` `}
           <a href="https://twitter.com/Blockchaingirls" target="_blank" rel="noreferrer">
             WiB
           </a> x <a href="https://twitter.com/ValuesIndex" target="_blank" rel="noreferrer">
