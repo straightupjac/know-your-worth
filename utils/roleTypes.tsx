@@ -4,6 +4,7 @@ export type CompHeaders = {
   companyStage: string;
   yearsOfExperience: string;
   annualBase: string;
+  employmentType: string;
 };
 
 export type CompData = {

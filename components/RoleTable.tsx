@@ -426,6 +426,17 @@ export const RoleOverview = () => {
       },
     },
     {
+      Header: "Role Type",
+      accessor: "employmentType",
+      Cell: ({ row }: { row: any }) => {
+        return (
+          <Box>
+            {row.original.item.employmentType}
+          </Box>
+        )
+      },
+    },
+    {
       Header: "Years of Experience",
       accessor: "yearsOfExperience",
       Cell: ({ row }: { row: any }) => {
@@ -440,10 +451,6 @@ export const RoleOverview = () => {
       Header: "Annual Base (USD)",
       accessor: "annualBase",
       Cell: ({ row }: { row: any }) => {
-        const [expanded, setExpanded] = useState(false);
-        const handleExpand = () => {
-          setExpanded((expandedVal) => !expandedVal);
-        };
         return (
           <Text>${row.original.item.annualBase.toLocaleString()}</Text>
         )

@@ -79,11 +79,11 @@
 
 @media (max-width: 600px) {
   .container {
-    padding: 1rem 1rem;
+    padding: 2rem 2rem;
   }
 
   .title {
-    font-size: 3.5rem;
+    font-size: 3rem;
   }
 
   .description {
@@ -93,7 +93,7 @@
 
 @media (max-width: 900px) {
   .container {
-    padding: 2rem 1rem;
+    padding: 2rem 2rem;
   }
 
   .title {
