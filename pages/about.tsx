@@ -1,10 +1,14 @@
-import { Box, Code, Container, List, ListItem, OrderedList, SimpleGrid, Text, UnorderedList, VStack } from "@chakra-ui/react";
+import { Box, Checkbox, Code, Container, HStack, IconButton, List, ListItem, OrderedList, SimpleGrid, Spacer, Text, UnorderedList, VStack } from "@chakra-ui/react";
 import { Meta } from "@components/core/Meta";
 import { NextPage } from "next";
 import styles from '@styles/About.module.css'
 import { Contributor } from "@components/Contributor";
+import { CheckIcon, CopyIcon } from "@chakra-ui/icons";
+import { useClipboard } from '@chakra-ui/react'
 
 const About: NextPage = () => {
+  const { hasCopied, onCopy } = useClipboard('https://airtable.com/shrgVd7uMZESofnDX');
+
   return (
     <>
       <Meta />
@@ -24,9 +28,15 @@ const About: NextPage = () => {
               We know there {`isn't`} enough reference data out there for compensation and benefits. We want to change that <a href="https://twitter.com/Blockchaingirls" target="_blank" rel="noreferrer">Women in Blockchain</a> and <a href="https://twitter.com/ValuesIndex" target="_blank" rel="noreferrer">ValuesIndex</a> invite everyone in Web3 to share salary, comp, and other relevant information to help each other know our worth!
             </Text>
             <Box padding={4} background='whiteAlpha.600' width='100%'>
-              <Text>
-                ✨ Take the <a href="https://airtable.com/shrgVd7uMZESofnDX" target="_blank" rel="noreferrer">survey</a>!
-              </Text>
+              <HStack width='100%' justifyContent='space-between'>
+                <Text>
+                  ✨ Directly link the <a href="https://airtable.com/shrgVd7uMZESofnDX" target="_blank" rel="noreferrer">survey</a>!
+                </Text>
+                <Spacer />
+                {hasCopied ?
+                  <IconButton aria-label="done copying button" variant='ghost' color="green.500" onClick={onCopy} icon={<CheckIcon />} /> :
+                  <IconButton aria-label="copy button" onClick={onCopy} icon={<CopyIcon />} />}
+              </HStack>
             </Box>
             <Text as="h2">
               {`Why we're doing this`}

@@ -27,10 +27,10 @@ export const NavBar = () => {
         About
       </Button>
     </Link>
-    <a href="https://airtable.com/shrgVd7uMZESofnDX" target="_blank" rel="noreferrer">
+    <Link href="/submit">
       <Button size="lg" variant="ghost" color="teal.800" >
         Submit
       </Button>
-    </a>
+    </Link>
   </Flex >)
 }
