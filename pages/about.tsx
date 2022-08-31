@@ -150,8 +150,9 @@ const About: NextPage = () => {
                 imgSrc="/assets/contributors/autumn.jpg"
               />
             </SimpleGrid>
+            <Text fontStyle="italic" fontSize="1rem" color="gray.500">Original Mirror article <a href="https://mirror.xyz/wib.eth/AcSHQiNAZBi_49fO0-nEC4ej6uuph_ssg42kfmYDnt8" target="_blank" rel="noreferrer">here</a>.</Text>
+            <Text fontStyle="italic" fontSize="1rem" color="gray.500">Gradients by <a href="https://twitter.com/maitrishahhhh" target="_blank" rel="noreferrer">maitrishahhhh</a>.</Text>
           </VStack>
-          <Text fontStyle="italic" fontSize="1rem" color="gray.500">Original Mirror article <a href="https://mirror.xyz/wib.eth/AcSHQiNAZBi_49fO0-nEC4ej6uuph_ssg42kfmYDnt8" target="_blank" rel="noreferrer">here</a>.</Text>
         </Container>
       </div>
     </>
