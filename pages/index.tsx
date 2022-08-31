@@ -9,7 +9,7 @@ const Home: NextPage = () => {
     <div className={styles.container}>
       <div className={styles.hero}>
         <Image alt="know your worth in web3" src="/assets/hero.svg" height={300} width={1000} />
-        <Text fontSize="2rem" textAlign='center'>
+        <Text fontSize="1.75rem" textAlign='center'>
           In collaboration with {` `}
           <a href="https://twitter.com/Blockchaingirls" target="_blank" rel="noreferrer">
             WiB
