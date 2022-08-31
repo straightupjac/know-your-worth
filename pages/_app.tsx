@@ -19,6 +19,12 @@ const theme = extendTheme({
         outline: {
           border: "2px solid",
         },
+        ghost: {
+          _hover: {
+            background: 'transparent',
+            color: '#3D4E74',
+          },
+        }
       },
     },
     Input: {
@@ -34,13 +40,16 @@ const theme = extendTheme({
   styles: {
     global: {
       body: {
+        fontSize: '1.15rem',
       },
       p: {
         color: '#3A3A3A',
       },
       a: {
+        color: '#3D4E74',
         _hover: {
           textDecoration: 'underline',
+          color: '#6379AD',
         },
       },
       h1: {
