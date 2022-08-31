@@ -107,6 +107,13 @@ const About: NextPage = () => {
             <Text>This project {`wouldn't`} be possible without our contributors and sponsors.</Text>
             <SimpleGrid columns={[2, 3, 3]} spacing={10}>
               <Contributor
+                name="straightupjac"
+                twitter="straightupjac"
+                imgSrc="/assets/contributors/straightupjac.png"
+                github="straightupjac"
+                website="https://www.straightupjac.xyz/"
+              />
+              <Contributor
                 name="Rebecca Mqamelo"
                 twitter="0xthembi"
                 imgSrc="/assets/contributors/rebecca.jpeg"
@@ -115,13 +122,6 @@ const About: NextPage = () => {
                 name="Manasi Vora"
                 twitter="manasilvora"
                 imgSrc="/assets/contributors/manasi.png"
-              />
-              <Contributor
-                name="straightupjac"
-                twitter="straightupjac"
-                imgSrc="/assets/contributors/straightupjac.png"
-                github="straightupjac"
-                website="https://www.straightupjac.xyz/"
               />
               <Contributor
                 name="Dulce Villarreal"
@@ -148,6 +148,12 @@ const About: NextPage = () => {
                 twitter="1autumn_leaf"
                 github="1autumn-leaf"
                 imgSrc="/assets/contributors/autumn.jpg"
+              />
+              <Contributor
+                name="Elena Giralt"
+                twitter="elenita_tweets"
+                website="https://www.elenagiralt.com/"
+                imgSrc="/assets/contributors/elena.jpg"
               />
             </SimpleGrid>
             <Text fontStyle="italic" fontSize="1rem" color="gray.500">Original Mirror article <a href="https://mirror.xyz/wib.eth/AcSHQiNAZBi_49fO0-nEC4ej6uuph_ssg42kfmYDnt8" target="_blank" rel="noreferrer">here</a>.</Text>
