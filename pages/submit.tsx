@@ -13,7 +13,7 @@ const Submit: NextPage = () => {
     <>
       <Meta />
       <div className={styles.container}>
-        <VStack padding={10} width="100%" gap={4}>
+        <VStack padding={10} width="100%" gap={4} maxWidth='1000px'>
           <Text as='h1' textAlign='center'>
             Submit a Datapoint
           </Text>
