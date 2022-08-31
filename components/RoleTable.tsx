@@ -58,12 +58,12 @@ export const TableRow = ({ row, prepareRow }: { row: any, prepareRow: any }) => 
       ))}
       {expanded ?
         <Td>
-          <IconButton onClick={handleExpand} size="xs" aria-label={"chevron down to expand and see more categories"}>
+          <IconButton onClick={handleExpand} size="lg" variant="ghost" aria-label={"chevron down to expand and see more categories"}>
             <ChevronDownIcon />
           </IconButton>
         </Td> :
         <Td>
-          <IconButton onClick={handleExpand} size="xs" aria-label={"chevron right to expand and see more categories"}>
+          <IconButton onClick={handleExpand} size="lg" variant="ghost" aria-label={"chevron right to expand and see more categories"}>
             <ChevronRightIcon />
           </IconButton>
         </Td>}

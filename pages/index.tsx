@@ -26,7 +26,7 @@ const Home: NextPage = () => {
       </div>
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Explore Roles
+          View Data Points
         </h1>
 
         <p className={styles.description}>
